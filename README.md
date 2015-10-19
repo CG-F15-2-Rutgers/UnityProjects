@@ -1,7 +1,7 @@
 #Group Name
 ######Unity Projects - CG Fall 2015 @ Rutgers
 ######By: *Samuel Baysting, David Arakelyan, Frank Hoffman*
-Check out our website: [Group Name Website](http://compgraphicsf15g2.weebly.com/ "Rutgers Comp Graphics Fall 2015 Group 2")
+Check out our website: [Rutgers Comp Graphics Group 2](http://compgraphicsf15g2.weebly.com/ "Rutgers Comp Graphics Group 2")
 
 ![alt text](teamLogo.png)
 
