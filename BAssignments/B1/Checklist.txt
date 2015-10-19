@@ -1,0 +1,8 @@
+REPEAT FOR ALL 3 PARTS:
+
+- Create an OFFLINE PLAYABLE web demo
+- Create and host the game on Facebook (http://answers.unity3d.com/questions/519982/how­to­publish­my­game­as­a­facebook­app.html)
+- Make a recording of it
+- Upload recording to YouTube
+- Write brief documentation describing what you did
+- Write brief user gruide
