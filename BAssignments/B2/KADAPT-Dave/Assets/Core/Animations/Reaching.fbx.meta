@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 296f624aaa512174dab559f4434b6df0
 ModelImporter:
-  serializedVersion: 16
+  serializedVersion: 18
   fileIDToRecycleName:
     100000: Dizy_SH_HeadJ
     100002: Dizy_SH_HeadTipJ
@@ -121,6 +121,7 @@ ModelImporter:
     400114: //RootNode
     7400000: Reaching_RightHand
     7400002: Reaching_LeftHand
+    7400004: PushingButton_RightHand
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -131,6 +132,10 @@ ModelImporter:
     bakeSimulation: 0
     optimizeGameObjects: 0
     motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
     animationCompression: 3
     animationRotationError: .5
     animationPositionError: .5
@@ -422,6 +427,148 @@ ModelImporter:
         weight: 0
       maskType: 0
       maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: PushingButton_RightHand
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 34
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: joint1
+        weight: 1
+      - path: joint1/Dizy_SH_ROOTJ_parentConstraint1_1
+        weight: 1
+      - path: joint1/Dizy_SH_ROOTJ_parentConstraint1_1/Dizy_SH_lHipJ
+        weight: 1
+      - path: joint1/Dizy_SH_ROOTJ_parentConstraint1_1/Dizy_SH_lHipJ/Dizy_SH_lKneeJ
+        weight: 1
+      - path: joint1/Dizy_SH_ROOTJ_parentConstraint1_1/Dizy_SH_lHipJ/Dizy_SH_lKneeJ/Dizy_SH_lAnkleJ
+        weight: 1
+      - path: joint1/Dizy_SH_ROOTJ_parentConstraint1_1/Dizy_SH_lHipJ/Dizy_SH_lKneeJ/Dizy_SH_lAnkleJ/Dizy_SH_lBallJ
+        weight: 1
+      - path: joint1/Dizy_SH_ROOTJ_parentConstraint1_1/Dizy_SH_lHipJ/Dizy_SH_lKneeJ/Dizy_SH_lAnkleJ/Dizy_SH_lBallJ/Dizy_SH_lToeJ
+        weight: 1
+      - path: joint1/Dizy_SH_ROOTJ_parentConstraint1_1/Dizy_SH_rHipJ
+        weight: 1
+      - path: joint1/Dizy_SH_ROOTJ_parentConstraint1_1/Dizy_SH_rHipJ/Dizy_SH_rKneeJ
+        weight: 1
+      - path: joint1/Dizy_SH_ROOTJ_parentConstraint1_1/Dizy_SH_rHipJ/Dizy_SH_rKneeJ/Dizy_SH_rAnkleJ
+        weight: 1
+      - path: joint1/Dizy_SH_ROOTJ_parentConstraint1_1/Dizy_SH_rHipJ/Dizy_SH_rKneeJ/Dizy_SH_rAnkleJ/Dizy_SH_rBallJ
+        weight: 1
+      - path: joint1/Dizy_SH_ROOTJ_parentConstraint1_1/Dizy_SH_rHipJ/Dizy_SH_rKneeJ/Dizy_SH_rAnkleJ/Dizy_SH_rBallJ/Dizy_SH_rToeJ
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_lClavicleJ
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_lClavicleJ/Dizy_SH_lShoulderJ
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_lClavicleJ/Dizy_SH_lShoulderJ/Dizy_SH_lElbowJ
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_lClavicleJ/Dizy_SH_lShoulderJ/Dizy_SH_lElbowJ/Dizy_SH_lWristJ
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_lClavicleJ/Dizy_SH_lShoulderJ/Dizy_SH_lElbowJ/Dizy_SH_lWristJ/Dizy_SH_lPalmJ
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_lClavicleJ/Dizy_SH_lShoulderJ/Dizy_SH_lElbowJ/Dizy_SH_lWristJ/Dizy_SH_lPalmJ/Dizy_SH_lFinger1J1
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_lClavicleJ/Dizy_SH_lShoulderJ/Dizy_SH_lElbowJ/Dizy_SH_lWristJ/Dizy_SH_lPalmJ/Dizy_SH_lFinger1J1/Dizy_SH_lFinger1J2
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_lClavicleJ/Dizy_SH_lShoulderJ/Dizy_SH_lElbowJ/Dizy_SH_lWristJ/Dizy_SH_lPalmJ/Dizy_SH_lFinger1J1/Dizy_SH_lFinger1J2/Dizy_SH_lFinger1J3
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_lClavicleJ/Dizy_SH_lShoulderJ/Dizy_SH_lElbowJ/Dizy_SH_lWristJ/Dizy_SH_lPalmJ/Dizy_SH_lFinger1J1/Dizy_SH_lFinger1J2/Dizy_SH_lFinger1J3/Dizy_SH_lFinger1JTip
+        weight: 0
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_lClavicleJ/Dizy_SH_lShoulderJ/Dizy_SH_lElbowJ/Dizy_SH_lWristJ/Dizy_SH_lPalmJ/Dizy_SH_lFinger2J1
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_lClavicleJ/Dizy_SH_lShoulderJ/Dizy_SH_lElbowJ/Dizy_SH_lWristJ/Dizy_SH_lPalmJ/Dizy_SH_lFinger2J1/Dizy_SH_lFinger2J2
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_lClavicleJ/Dizy_SH_lShoulderJ/Dizy_SH_lElbowJ/Dizy_SH_lWristJ/Dizy_SH_lPalmJ/Dizy_SH_lFinger2J1/Dizy_SH_lFinger2J2/Dizy_SH_lFinger2J3
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_lClavicleJ/Dizy_SH_lShoulderJ/Dizy_SH_lElbowJ/Dizy_SH_lWristJ/Dizy_SH_lPalmJ/Dizy_SH_lFinger2J1/Dizy_SH_lFinger2J2/Dizy_SH_lFinger2J3/Dizy_SH_lFinger2JTip
+        weight: 0
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_lClavicleJ/Dizy_SH_lShoulderJ/Dizy_SH_lElbowJ/Dizy_SH_lWristJ/Dizy_SH_lThumbJ1
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_lClavicleJ/Dizy_SH_lShoulderJ/Dizy_SH_lElbowJ/Dizy_SH_lWristJ/Dizy_SH_lThumbJ1/Dizy_SH_lThumbJ2
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_lClavicleJ/Dizy_SH_lShoulderJ/Dizy_SH_lElbowJ/Dizy_SH_lWristJ/Dizy_SH_lThumbJ1/Dizy_SH_lThumbJ2/Dizy_SH_lThumbJ3
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_lClavicleJ/Dizy_SH_lShoulderJ/Dizy_SH_lElbowJ/Dizy_SH_lWristJ/Dizy_SH_lThumbJ1/Dizy_SH_lThumbJ2/Dizy_SH_lThumbJ3/Dizy_SH_lThumbJTip
+        weight: 0
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_Neck01J
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_Neck01J/Dizy_SH_HeadJ
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_Neck01J/Dizy_SH_HeadJ/Dizy_SH_HeadTipJ
+        weight: 0
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_Neck01J/Dizy_SH_HeadJ/Dizy_SH_JawJ
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_Neck01J/Dizy_SH_HeadJ/Dizy_SH_JawJ/Dizy_SH_JawTipJ
+        weight: 0
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_Neck01J/Dizy_SH_HeadJ/Dizy_SH_lEyeJ
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_Neck01J/Dizy_SH_HeadJ/Dizy_SH_rEyeJ
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_Neck01J/Dizy_SH_HeadJ/polySurface697
+        weight: 0
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_rClavicleJ
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_rClavicleJ/Dizy_SH_rShoulderJ
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_rClavicleJ/Dizy_SH_rShoulderJ/Dizy_SH_rElbowJ
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_rClavicleJ/Dizy_SH_rShoulderJ/Dizy_SH_rElbowJ/Dizy_SH_rWristJ
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_rClavicleJ/Dizy_SH_rShoulderJ/Dizy_SH_rElbowJ/Dizy_SH_rWristJ/Dizy_SH_rPalmJ
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_rClavicleJ/Dizy_SH_rShoulderJ/Dizy_SH_rElbowJ/Dizy_SH_rWristJ/Dizy_SH_rPalmJ/Dizy_SH_rFinger1J1
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_rClavicleJ/Dizy_SH_rShoulderJ/Dizy_SH_rElbowJ/Dizy_SH_rWristJ/Dizy_SH_rPalmJ/Dizy_SH_rFinger1J1/Dizy_SH_rFinger1J2
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_rClavicleJ/Dizy_SH_rShoulderJ/Dizy_SH_rElbowJ/Dizy_SH_rWristJ/Dizy_SH_rPalmJ/Dizy_SH_rFinger1J1/Dizy_SH_rFinger1J2/Dizy_SH_rFinger1J3
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_rClavicleJ/Dizy_SH_rShoulderJ/Dizy_SH_rElbowJ/Dizy_SH_rWristJ/Dizy_SH_rPalmJ/Dizy_SH_rFinger1J1/Dizy_SH_rFinger1J2/Dizy_SH_rFinger1J3/Dizy_SH_rFinger1JTip
+        weight: 0
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_rClavicleJ/Dizy_SH_rShoulderJ/Dizy_SH_rElbowJ/Dizy_SH_rWristJ/Dizy_SH_rPalmJ/Dizy_SH_rFinger2J1
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_rClavicleJ/Dizy_SH_rShoulderJ/Dizy_SH_rElbowJ/Dizy_SH_rWristJ/Dizy_SH_rPalmJ/Dizy_SH_rFinger2J1/Dizy_SH_rFinger2J2
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_rClavicleJ/Dizy_SH_rShoulderJ/Dizy_SH_rElbowJ/Dizy_SH_rWristJ/Dizy_SH_rPalmJ/Dizy_SH_rFinger2J1/Dizy_SH_rFinger2J2/Dizy_SH_rFinger2J3
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_rClavicleJ/Dizy_SH_rShoulderJ/Dizy_SH_rElbowJ/Dizy_SH_rWristJ/Dizy_SH_rPalmJ/Dizy_SH_rFinger2J1/Dizy_SH_rFinger2J2/Dizy_SH_rFinger2J3/Dizy_SH_rFinger2JTip
+        weight: 0
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_rClavicleJ/Dizy_SH_rShoulderJ/Dizy_SH_rElbowJ/Dizy_SH_rWristJ/Dizy_SH_rThumbJ1
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_rClavicleJ/Dizy_SH_rShoulderJ/Dizy_SH_rElbowJ/Dizy_SH_rWristJ/Dizy_SH_rThumbJ1/Dizy_SH_rThumbJ2
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_rClavicleJ/Dizy_SH_rShoulderJ/Dizy_SH_rElbowJ/Dizy_SH_rWristJ/Dizy_SH_rThumbJ1/Dizy_SH_rThumbJ2/Dizy_SH_rThumbJ3
+        weight: 1
+      - path: joint1/Dizy_SH_Spine01J/Dizy_SH_Spine02J/Dizy_SH_SpineTopJ/Dizy_SH_rClavicleJ/Dizy_SH_rShoulderJ/Dizy_SH_rElbowJ/Dizy_SH_rWristJ/Dizy_SH_rThumbJ1/Dizy_SH_rThumbJ2/Dizy_SH_rThumbJ3/Dizy_SH_rThumbJTip
+        weight: 0
+      maskType: 0
+      maskSource: {instanceID: 0}
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -433,11 +580,13 @@ ModelImporter:
     generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
+    keepQuads: 0
     weldVertices: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
+    useFileScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     splitTangentsAcrossUV: 1
@@ -1082,8 +1231,12 @@ ModelImporter:
     legStretch: .0500000007
     feetSpacing: 0
     rootMotionBoneName: 
+    hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: e8914d097ece7cc48a83d5fccd4098c0,
     type: 3}
   animationType: 3
+  humanoidOversampling: 1
   additionalBone: 0
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 

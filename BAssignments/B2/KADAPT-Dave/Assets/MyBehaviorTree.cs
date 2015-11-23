@@ -4,11 +4,10 @@ using TreeSharpPlus;
 
 public class MyBehaviorTree : MonoBehaviour
 {
-	//public Transform wander1;
-	//public Transform wander2;
+	public Transform wander1;
+	public Transform wander2;
 	//public Transform wander3;
     public GameObject CRIMINAL;
-	public GameObject participant;
     public GameObject COP;
     private BehaviorAgent behaviorAgent;
     public GameObject button;
@@ -32,7 +31,7 @@ public class MyBehaviorTree : MonoBehaviour
 	protected Node ST_ApproachAndWait(Transform target)
 	{
 		Val<Vector3> position = Val.V (() => target.position);
-		return new Sequence( participant.GetComponent<BehaviorMecanim>().Node_GoTo(position), new LeafWait(1000));
+		return new Sequence( CRIMINAL.GetComponent<BehaviorMecanim>().Node_GoTo(position), new LeafWait(1000));
 	}
 
     protected Node ApproachAndStare(Transform target)
@@ -86,18 +85,18 @@ public class MyBehaviorTree : MonoBehaviour
 
         return new DecoratorLoop(
 
-            new Sequence(
+            new SequenceShuffle(
                 //this.ST_ApproachAndWait(this.wander1),
 
-                this.ApproachAndStare2(this.COP.transform)));
+               // this.ApproachAndStare2(this.COP.transform)));
                     //this.ApproachAndStare2(this.COP.transform),
                    // this.CopEngageCriminal(this.CRIMINAL.transform),
                     //this.HandsUp(this.COP.transform)));
                     //this.ApproachButton(this.button.transform),
                     //this.ApproachAndStare(this.CRIMINAL.transform),
                    // this.PressButton(this.COP.transform)));
-        //this.ST_ApproachAndWait(this.wander2),
-        //this.ST_ApproachAndWait(this.wander3)));
+        this.ST_ApproachAndWait(this.wander1),
+        this.ST_ApproachAndWait(this.wander2)));
         
     }
     
