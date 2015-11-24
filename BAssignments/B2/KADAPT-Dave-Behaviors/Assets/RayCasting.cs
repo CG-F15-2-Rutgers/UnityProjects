@@ -32,9 +32,6 @@ public class RayCasting : MonoBehaviour {
         animator = MovingDoor.GetComponent<Animator>();
         participantLocation = HELPME.transform.position;
         HelpMeselected = false;
-        behaviorAgent = new BehaviorAgent(this.BuildTreeRoot());
-        BehaviorManager.Instance.Register(behaviorAgent);
-        behaviorAgent.StartBehavior();
       
     }
 	
@@ -161,27 +158,6 @@ public class RayCasting : MonoBehaviour {
     {
         Val<Vector3> position = Val.V(() => target.position);
         return new Sequence(COP.GetComponent<BehaviorMecanim>().Node_BodyAnimation("FIGHT", true), new LeafWait(1000));
-    }
-
-
-    protected Node GunIdle(Transform target)
-    {
-        Val<Vector3> position = Val.V(() => target.position);
-        
-            return new Sequence(COP.GetComponent<BehaviorMecanim>().Node_HandAnimation("PISTOLAIM", true), new LeafWait(1000));
-       
-    }
-
-
-
-    protected Node BuildTreeRoot()
-    {
-      
-           return new DecoratorLoop(
-           new Sequence(
-           this.GunIdle(this.COP.transform)));
-        
-        
     }
 
     

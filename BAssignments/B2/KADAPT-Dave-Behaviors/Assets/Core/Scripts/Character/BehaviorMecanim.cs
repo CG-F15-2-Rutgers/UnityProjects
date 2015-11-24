@@ -204,6 +204,21 @@ public class BehaviorMecanim : MonoBehaviour
             () => this.Character.HandAnimation(gestureName, false));
     }
 
+    public Node Node_HandAnimationHelpMe(Val<string> gestureName, Val<bool> start)
+    {
+        return new LeafInvoke(
+            () => this.Character.HandAnimationHelpMe(gestureName, start),
+            () => this.Character.HandAnimationHelpMe(gestureName, false));
+    }
+
+    public Node Node_HandAnimationIdle(Val<string> gestureName, Val<bool> start)
+    {
+
+        return new LeafInvoke(
+            () => this.Character.HandAnimationIdle(gestureName, start),
+            () => this.Character.HandAnimationIdle(gestureName, false));
+    }
+
     /// <summary>
     /// A Face animation is started if the bool is true, the face animation 
     /// is stopped if the bool is false
@@ -220,6 +235,13 @@ public class BehaviorMecanim : MonoBehaviour
         return new LeafInvoke(
             () => this.Character.BodyAnimation(gestureName, start),
             () => this.Character.BodyAnimation(gestureName, false));
+    }
+
+    public Node Node_BodyAnimationButton(Val<string> gestureName, Val<bool> start)
+    {
+        return new LeafInvoke(
+            () => this.Character.BodyAnimationButton(gestureName, start),
+            () => this.Character.BodyAnimationButton(gestureName, false));
     }
 
 

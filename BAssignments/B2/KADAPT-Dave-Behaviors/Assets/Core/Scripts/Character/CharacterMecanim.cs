@@ -12,6 +12,14 @@ public class CharacterMecanim : MonoBehaviour
     public const float MAX_REACHING_HEIGHT = 2.0f;
     public const float MAX_REACHING_ANGLE = 100;
 
+    private GameObject COP;
+    private GameObject thisCharacter;
+    private bool helpme_interact = false;
+    private bool criminal_interact = false;
+    private bool hostage_interact = false;
+    private bool button_interact = false;
+    public Canvas speechBubble = null;
+
     private Dictionary<FullBodyBipedEffector, bool> triggers;
     private Dictionary<FullBodyBipedEffector, bool> finish;
 
@@ -19,6 +27,145 @@ public class CharacterMecanim : MonoBehaviour
     public BodyMecanim Body = null;
 
     void Awake() { this.Initialize(); }
+
+    void Start()
+    {
+        GameObject[] cops = GameObject.FindGameObjectsWithTag("Cop");
+        thisCharacter = this.gameObject;
+
+        foreach (GameObject cop in cops)
+        {
+            COP = cop;
+        }
+
+        speechBubble.enabled = false;
+    }
+
+    private System.Diagnostics.Stopwatch speechTimer = new System.Diagnostics.Stopwatch();
+    void Update()
+    {
+        if (speechBubble != null)
+        {
+            if (helpme_interact == true && speechTimer.ElapsedMilliseconds < 10000)
+            {
+                speechTimer.Start();
+                speechBubble.enabled = true;
+            }
+            else
+            {
+                speechTimer.Stop();
+                speechTimer.Reset();
+                speechBubble.enabled = false;
+                helpme_interact = false;
+            }
+        }
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            // Reset all interaction variables to allow new interactions
+            helpme_interact = false;
+            criminal_interact = false;
+            hostage_interact = false;
+            button_interact = false;
+
+            // Find where the ray hit
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            // Detect who the ray hit and allow interactions
+            if (Physics.Raycast(ray, out hit) == true)
+            {
+                Vector3 characterPosition = hit.transform.gameObject.transform.position;
+                Vector3 copPosition = COP.transform.position;
+                Debug.Log("Tag clicked: " + hit.transform.gameObject.tag);
+                if (hit.transform.gameObject.CompareTag("HelpMe") && Mathf.Abs(Vector3.Distance(characterPosition, copPosition)) < 2 && hit.transform.gameObject == thisCharacter)
+                {
+                    helpme_interact = true;
+                    Debug.Log(thisCharacter.name + " Clicked");
+
+                }
+                else if (hit.transform.gameObject.CompareTag("Criminal") && Mathf.Abs(Vector3.Distance(characterPosition, copPosition)) < 2 && hit.transform.gameObject == thisCharacter)
+                {
+                    criminal_interact = true;
+                    Debug.Log(thisCharacter.name + " Clicked");
+
+                }
+                else if (hit.transform.gameObject.CompareTag("Hostage") && Mathf.Abs(Vector3.Distance(characterPosition, copPosition)) < 2 && hit.transform.gameObject == thisCharacter)
+                {
+                    hostage_interact = true;
+                    Debug.Log(thisCharacter.name + " Clicked");
+
+                }
+                else if (hit.transform.gameObject.CompareTag("ButtonDoor1") && Mathf.Abs(Vector3.Distance(characterPosition, copPosition)) < 4 && COP == thisCharacter)
+                {
+                    button_interact = true;
+                    Debug.Log("Button Clicked");
+
+                }
+            }
+        }
+
+    }
+
+    /*void OnMouseDown()
+    {
+        // Reset all interaction variables to allow new interactions
+        helpme_interact = false;
+        criminal_interact = false;
+        hostage_interact = false;
+        button_interact = false;
+
+        // Find where the ray hit
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        // Detect who the ray hit and allow interactions
+        if (Physics.Raycast(ray, out hit) == true)
+        {
+            Vector3 characterPosition = hit.transform.gameObject.transform.position;
+            Vector3 copPosition = COP.transform.position;
+            Debug.Log("Tag clicked: " + hit.transform.gameObject.tag);
+            if (hit.transform.gameObject.CompareTag("HelpMe") && Mathf.Abs(Vector3.Distance(characterPosition,copPosition)) < 2 && hit.transform.gameObject == thisCharacter)
+            {
+                helpme_interact = true;
+                Debug.Log(thisCharacter.name + " Clicked");
+
+            }
+            else if (hit.transform.gameObject.CompareTag("Criminal") && Mathf.Abs(Vector3.Distance(characterPosition, copPosition)) < 2 && hit.transform.gameObject == thisCharacter)
+            {
+                criminal_interact = true;
+                Debug.Log(thisCharacter.name + " Clicked");
+
+            }
+            else if (hit.transform.gameObject.CompareTag("Hostage") && Mathf.Abs(Vector3.Distance(characterPosition, copPosition)) < 2 && hit.transform.gameObject == thisCharacter)
+            {
+                hostage_interact = true;
+                Debug.Log(thisCharacter.name + " Clicked");
+
+            }
+            else if (hit.transform.gameObject.CompareTag("ButtonDoor1") && Mathf.Abs(Vector3.Distance(characterPosition, copPosition)) < 4)
+            {
+                button_interact = true;
+                Debug.Log(thisCharacter.name + " Clicked");
+
+            }
+
+        }
+
+        /*GameObject[] allCharacters = UnityEngine.Object.FindObjectsOfType<GameObject>();
+
+        foreach (GameObject character in allCharacters)
+        {
+            float dist = Vector3.Distance(character.transform.position, COP.transform.position);
+            if(character.tag == "HelpMe" && Mathf.Abs(dist) < 3) { Debug.Log("Left click on dude who needs help!"); }
+            if (character.tag == "Criminal" && Mathf.Abs(dist) < 3) { Debug.Log("Left click on criminal!"); }
+            if (character.tag == "Hostage" && Mathf.Abs(dist) < 3) { Debug.Log("Left click on hostage!"); }
+            //if (Vector3.Distance(transform.position, allCharacters[i].transform.position) <= minimumDistance)
+            //return true;
+        }
+
+        //return false;
+    }*/
 
     /// <summary>
     /// Searches for and binds a reference to the Body interface
@@ -290,13 +437,47 @@ public class CharacterMecanim : MonoBehaviour
 		return RunStatus.Success;
 	}
 
-	public virtual RunStatus BodyAnimation(Val<string> gestureName, Val<bool> isActive)
+    public virtual RunStatus HandAnimationHelpMe(
+        Val<string> gestureName, Val<bool> isActive)
+    {
+        if (helpme_interact == false)
+        {
+            this.Body.HandAnimation(gestureName.Value, isActive.Value);
+            return RunStatus.Success;
+        }
+        return RunStatus.Success;
+    }
+
+    public virtual RunStatus HandAnimationIdle(
+        Val<string> gestureName, Val<bool> isActive)
+    {
+        if (criminal_interact == false && button_interact == false && hostage_interact == false)
+        {
+            this.Body.HandAnimation(gestureName.Value, isActive.Value);
+            return RunStatus.Success;
+        }
+        return RunStatus.Success;
+    }
+
+    public virtual RunStatus BodyAnimation(Val<string> gestureName, Val<bool> isActive)
 	{
 		this.Body.BodyAnimation(gestureName.Value, isActive.Value);
 		return RunStatus.Success;
 	}
 
-	public RunStatus ResetAnimation()
+    public virtual RunStatus BodyAnimationButton(Val<string> gestureName, Val<bool> isActive)
+    {
+        if (button_interact)
+        {
+            this.Body.BodyAnimation(gestureName.Value, isActive.Value);
+            button_interact = false;
+            return RunStatus.Success;
+        }
+        this.Body.BodyAnimation(gestureName.Value, false);
+        return RunStatus.Success;
+    }
+
+    public RunStatus ResetAnimation()
     {
         this.Body.ResetAnimation();
         return RunStatus.Success;

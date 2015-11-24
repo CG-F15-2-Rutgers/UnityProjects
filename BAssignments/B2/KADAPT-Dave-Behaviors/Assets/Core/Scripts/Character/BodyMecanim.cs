@@ -46,7 +46,7 @@ public class BodyMecanim : MonoBehaviour
     public event InteractionSystem.InteractionEvent InteractionStop;
 
     private IKController ik = null;
-    private Animator animator = null;
+    public Animator animator = null;
     private SteeringController steering = null;
 
     private const float IN_RANGE = 2.0f;
