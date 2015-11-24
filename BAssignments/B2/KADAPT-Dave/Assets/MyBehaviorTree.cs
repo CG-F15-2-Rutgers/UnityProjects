@@ -25,7 +25,6 @@ public class MyBehaviorTree : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-	
 	}
 
 	protected Node ST_ApproachAndWait(Transform target)
@@ -77,11 +76,15 @@ public class MyBehaviorTree : MonoBehaviour
         Val<Vector3> position = Val.V(() => target.position);
         return new Sequence(COP.GetComponent<BehaviorMecanim>().Node_BodyAnimation("FIGHT", true), new LeafWait(1000));
     }
-    
+
+    protected Node ReadWithRightHand(Transform target)
+    {
+        Val<Vector3> position = Val.V(() => target.position);
+        return new Sequence(COP.GetComponent<BehaviorMecanim>().Node_BodyAnimation("REACHRIGHT", true), new LeafWait(1000));
+    }
+
     protected Node BuildTreeRoot()
 	{
-
-
 
         return new DecoratorLoop(
 
@@ -99,5 +102,7 @@ public class MyBehaviorTree : MonoBehaviour
         this.ST_ApproachAndWait(this.wander2)));
         
     }
-    
+
+   
+
 }
