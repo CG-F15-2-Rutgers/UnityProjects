@@ -14,10 +14,13 @@ public class CharacterMecanim : MonoBehaviour
 
     private GameObject COP;
     private GameObject thisCharacter;
-    private bool helpme_interact = false;
-    private bool criminal_interact = false;
-    private bool hostage_interact = false;
-    private bool button_interact = false;
+    private GameObject lastHitCharacter;
+    public bool helpme_interact = false;
+    public bool helpme_interact2 = false;
+    public bool criminal_interact = false;
+    public bool hostage_interact = false;
+    public bool button_interact = false;
+    public bool cop_orient = false;
     public Canvas speechBubble = null;
 
     private Dictionary<FullBodyBipedEffector, bool> triggers;
@@ -62,11 +65,6 @@ public class CharacterMecanim : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1"))
         {
-            // Reset all interaction variables to allow new interactions
-            helpme_interact = false;
-            criminal_interact = false;
-            hostage_interact = false;
-            button_interact = false;
 
             // Find where the ray hit
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -75,28 +73,31 @@ public class CharacterMecanim : MonoBehaviour
             // Detect who the ray hit and allow interactions
             if (Physics.Raycast(ray, out hit) == true)
             {
+                lastHitCharacter = hit.transform.gameObject;
                 Vector3 characterPosition = hit.transform.gameObject.transform.position;
                 Vector3 copPosition = COP.transform.position;
-                Debug.Log("Tag clicked: " + hit.transform.gameObject.tag);
-                if (hit.transform.gameObject.CompareTag("HelpMe") && Mathf.Abs(Vector3.Distance(characterPosition, copPosition)) < 2 && hit.transform.gameObject == thisCharacter)
+                if (hit.transform.gameObject.CompareTag("HelpMe") && Mathf.Abs(Vector3.Distance(characterPosition, copPosition)) < 3 && hit.transform.gameObject == thisCharacter)
                 {
                     helpme_interact = true;
                     Debug.Log(thisCharacter.name + " Clicked");
 
                 }
-                else if (hit.transform.gameObject.CompareTag("Criminal") && Mathf.Abs(Vector3.Distance(characterPosition, copPosition)) < 2 && hit.transform.gameObject == thisCharacter)
+                if (hit.transform.gameObject.CompareTag("HelpMe") && Mathf.Abs(Vector3.Distance(characterPosition, copPosition)) < 3 && COP == thisCharacter)
+                {
+                    helpme_interact2 = true;
+
+                }
+                if (hit.transform.gameObject.CompareTag("Criminal") && Mathf.Abs(Vector3.Distance(characterPosition, copPosition)) < 2 && (hit.transform.gameObject == thisCharacter || COP == thisCharacter))
                 {
                     criminal_interact = true;
-                    Debug.Log(thisCharacter.name + " Clicked");
 
                 }
-                else if (hit.transform.gameObject.CompareTag("Hostage") && Mathf.Abs(Vector3.Distance(characterPosition, copPosition)) < 2 && hit.transform.gameObject == thisCharacter)
+                if (hit.transform.gameObject.CompareTag("Hostage") && Mathf.Abs(Vector3.Distance(characterPosition, copPosition)) < 2 && (hit.transform.gameObject == thisCharacter || COP == thisCharacter))
                 {
                     hostage_interact = true;
-                    Debug.Log(thisCharacter.name + " Clicked");
 
                 }
-                else if (hit.transform.gameObject.CompareTag("ButtonDoor1") && Mathf.Abs(Vector3.Distance(characterPosition, copPosition)) < 4 && COP == thisCharacter)
+                if (hit.transform.gameObject.CompareTag("ButtonDoor1") && Mathf.Abs(Vector3.Distance(characterPosition, copPosition)) < 3 && COP == thisCharacter)
                 {
                     button_interact = true;
                     Debug.Log("Button Clicked");
@@ -230,6 +231,90 @@ public class CharacterMecanim : MonoBehaviour
         return RunStatus.Running;
     }
 
+    public virtual RunStatus NavTurnButton(Val<Vector3> target)
+    {
+        if (button_interact)
+        {
+            if (thisCharacter == COP)
+            {
+                this.Body.NavSetOrientationBehavior(OrientationBehavior.None);
+                this.Body.NavSetDesiredOrientation(target.Value);
+                if (this.Body.NavIsFacingDesired() == true)
+                {
+                    this.Body.NavSetOrientationBehavior(
+                        OrientationBehavior.LookForward);
+                    return RunStatus.Success;
+                }
+                return RunStatus.Running;
+            }
+        }
+        return RunStatus.Success;
+    }
+
+    public virtual RunStatus NavTurnCriminal()
+    {
+        if (criminal_interact)
+        {
+            if (thisCharacter == COP)
+            {
+                this.Body.NavSetOrientationBehavior(OrientationBehavior.None);
+                this.Body.NavSetDesiredOrientation(lastHitCharacter.transform.position);
+                if (this.Body.NavIsFacingDesired() == true)
+                {
+                    this.Body.NavSetOrientationBehavior(
+                        OrientationBehavior.LookForward);
+                    return RunStatus.Success;
+                }
+                return RunStatus.Running;
+            }
+            if (thisCharacter == lastHitCharacter)
+            {
+                this.Body.NavSetOrientationBehavior(OrientationBehavior.None);
+                this.Body.NavSetDesiredOrientation(COP.transform.position);
+                if (this.Body.NavIsFacingDesired() == true)
+                {
+                    this.Body.NavSetOrientationBehavior(
+                        OrientationBehavior.LookForward);
+                    return RunStatus.Success;
+                }
+                return RunStatus.Running;
+            }
+        }
+        return RunStatus.Success;
+    }
+
+    public virtual RunStatus NavTurnHostage()
+    {
+        if (hostage_interact)
+        {
+            if(thisCharacter == COP)
+            {
+                this.Body.NavSetOrientationBehavior(OrientationBehavior.None);
+                this.Body.NavSetDesiredOrientation(lastHitCharacter.transform.position);
+                if (this.Body.NavIsFacingDesired() == true)
+                {
+                    this.Body.NavSetOrientationBehavior(
+                        OrientationBehavior.LookForward);
+                    return RunStatus.Success;
+                }
+                return RunStatus.Running;
+            }
+            if (thisCharacter == lastHitCharacter)
+            {
+                this.Body.NavSetOrientationBehavior(OrientationBehavior.None);
+                this.Body.NavSetDesiredOrientation(COP.transform.position);
+                if (this.Body.NavIsFacingDesired() == true)
+                {
+                    this.Body.NavSetOrientationBehavior(
+                        OrientationBehavior.LookForward);
+                    return RunStatus.Success;
+                }
+                return RunStatus.Running;
+            }
+        }
+        return RunStatus.Success;
+    }
+
     /// <summary>
     /// Turns to face a desired orientation
     /// </summary>
@@ -254,6 +339,39 @@ public class CharacterMecanim : MonoBehaviour
         Val<OrientationBehavior> behavior)
     {
         this.Body.NavSetOrientationBehavior(behavior.Value);
+        return RunStatus.Success;
+    }
+
+    public virtual RunStatus NavOrientBehaviorButton(
+        Val<OrientationBehavior> behavior)
+    {
+        if (button_interact)
+        {
+            this.Body.NavSetOrientationBehavior(behavior.Value);
+            return RunStatus.Success;
+        }
+        return RunStatus.Success;
+    }
+
+    public virtual RunStatus NavOrientBehaviorCriminal(
+        Val<OrientationBehavior> behavior)
+    {
+        if (criminal_interact)
+        {
+            this.Body.NavSetOrientationBehavior(behavior.Value);
+            return RunStatus.Success;
+        }
+        return RunStatus.Success;
+    }
+
+    public virtual RunStatus NavOrientBehaviorHostage(
+        Val<OrientationBehavior> behavior)
+    {
+        if (hostage_interact)
+        {
+            this.Body.NavSetOrientationBehavior(behavior.Value);
+            return RunStatus.Success;
+        }
         return RunStatus.Success;
     }
 
@@ -448,14 +566,57 @@ public class CharacterMecanim : MonoBehaviour
         return RunStatus.Success;
     }
 
-    public virtual RunStatus HandAnimationIdle(
+    public virtual RunStatus HandAnimationHelpMe2(
         Val<string> gestureName, Val<bool> isActive)
     {
-        if (criminal_interact == false && button_interact == false && hostage_interact == false)
+        if (helpme_interact2)
         {
             this.Body.HandAnimation(gestureName.Value, isActive.Value);
+            helpme_interact2 = false;
             return RunStatus.Success;
         }
+        this.Body.HandAnimation(gestureName.Value, false);
+        return RunStatus.Success;
+    }
+
+    public virtual RunStatus HandAnimationButton(
+        Val<string> gestureName, Val<bool> isActive)
+    {
+        if (button_interact)
+        {
+            this.Body.HandAnimation(gestureName.Value, isActive.Value);
+            button_interact = false;
+            return RunStatus.Success;
+        }
+        this.Body.HandAnimation(gestureName.Value, false);
+        return RunStatus.Success;
+    }
+
+    public virtual RunStatus HandAnimationCriminal(
+        Val<string> gestureName, Val<bool> isActive)
+    {
+        Debug.Log("Criminal hand animation called, but not invoked");
+        if (criminal_interact)
+        {
+            Debug.Log("Criminal hand animation invoked!");
+            this.Body.HandAnimation(gestureName.Value, isActive.Value);
+            criminal_interact = false;
+            return RunStatus.Success;
+        }
+        this.Body.HandAnimation(gestureName.Value, false);
+        return RunStatus.Success;
+    }
+
+    public virtual RunStatus HandAnimationHostage(
+        Val<string> gestureName, Val<bool> isActive)
+    {
+        if (hostage_interact)
+        {
+            this.Body.HandAnimation(gestureName.Value, isActive.Value);
+            hostage_interact = false;
+            return RunStatus.Success;
+        }
+        this.Body.HandAnimation(gestureName.Value, false);
         return RunStatus.Success;
     }
 
@@ -471,6 +632,40 @@ public class CharacterMecanim : MonoBehaviour
         {
             this.Body.BodyAnimation(gestureName.Value, isActive.Value);
             button_interact = false;
+            return RunStatus.Success;
+        }
+        this.Body.BodyAnimation(gestureName.Value, false);
+        return RunStatus.Success;
+    }
+
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(1);
+    }
+
+    public virtual RunStatus BodyAnimationCriminal(Val<string> gestureName, Val<bool> isActive)
+    {
+        if (criminal_interact)
+        {
+            if(thisCharacter != COP)
+            {
+                Wait();
+            }
+            Debug.Log("Criminal action invoked!");
+            this.Body.BodyAnimation(gestureName.Value, isActive.Value);
+            criminal_interact = false;
+            return RunStatus.Success;
+        }
+        this.Body.BodyAnimation(gestureName.Value, false);
+        return RunStatus.Success;
+    }
+
+    public virtual RunStatus BodyAnimationHostage(Val<string> gestureName, Val<bool> isActive)
+    {
+        if (hostage_interact)
+        {
+            this.Body.BodyAnimation(gestureName.Value, isActive.Value);
+            hostage_interact = false;
             return RunStatus.Success;
         }
         this.Body.BodyAnimation(gestureName.Value, false);

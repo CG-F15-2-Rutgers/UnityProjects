@@ -82,6 +82,30 @@ public class BehaviorMecanim : MonoBehaviour
                 OrientationBehavior.LookForward));
     }
 
+    public Node Node_OrientTowardsButton(Val<Vector3> targ)
+    {
+        return new LeafInvoke(
+            () => this.Character.NavTurnButton(targ),
+            () => this.Character.NavOrientBehaviorButton(
+                OrientationBehavior.LookForward));
+    }
+
+    public Node Node_OrientTowardsCriminal()
+    {
+        return new LeafInvoke(
+            () => this.Character.NavTurnCriminal(),
+            () => this.Character.NavOrientBehaviorCriminal(
+                OrientationBehavior.LookForward));
+    }
+
+    public Node Node_OrientTowardsHostage()
+    {
+        return new LeafInvoke(
+            () => this.Character.NavTurnHostage(),
+            () => this.Character.NavOrientBehaviorHostage(
+                OrientationBehavior.LookForward));
+    }
+
     /// <summary>
     /// Orient towards a target position
     /// </summary>
@@ -211,12 +235,35 @@ public class BehaviorMecanim : MonoBehaviour
             () => this.Character.HandAnimationHelpMe(gestureName, false));
     }
 
-    public Node Node_HandAnimationIdle(Val<string> gestureName, Val<bool> start)
+    public Node Node_HandAnimationHelpMe2(Val<string> gestureName, Val<bool> start)
+    {
+        return new LeafInvoke(
+            () => this.Character.HandAnimationHelpMe2(gestureName, start),
+            () => this.Character.HandAnimationHelpMe2(gestureName, false));
+    }
+
+    public Node Node_HandAnimationButton(Val<string> gestureName, Val<bool> start)
     {
 
         return new LeafInvoke(
-            () => this.Character.HandAnimationIdle(gestureName, start),
-            () => this.Character.HandAnimationIdle(gestureName, false));
+            () => this.Character.HandAnimationButton(gestureName, start),
+            () => this.Character.HandAnimationButton(gestureName, false));
+    }
+
+    public Node Node_HandAnimationCriminal(Val<string> gestureName, Val<bool> start)
+    {
+
+        return new LeafInvoke(
+            () => this.Character.HandAnimationCriminal(gestureName, start),
+            () => this.Character.HandAnimationCriminal(gestureName, false));
+    }
+
+    public Node Node_HandAnimationHostage(Val<string> gestureName, Val<bool> start)
+    {
+
+        return new LeafInvoke(
+            () => this.Character.HandAnimationHostage(gestureName, start),
+            () => this.Character.HandAnimationHostage(gestureName, false));
     }
 
     /// <summary>
@@ -242,6 +289,20 @@ public class BehaviorMecanim : MonoBehaviour
         return new LeafInvoke(
             () => this.Character.BodyAnimationButton(gestureName, start),
             () => this.Character.BodyAnimationButton(gestureName, false));
+    }
+
+    public Node Node_BodyAnimationCriminal(Val<string> gestureName, Val<bool> start)
+    {
+        return new LeafInvoke(
+            () => this.Character.BodyAnimationCriminal(gestureName, start),
+            () => this.Character.BodyAnimationCriminal(gestureName, false));
+    }
+
+    public Node Node_BodyAnimationHostage(Val<string> gestureName, Val<bool> start)
+    {
+        return new LeafInvoke(
+            () => this.Character.BodyAnimationHostage(gestureName, start),
+            () => this.Character.BodyAnimationHostage(gestureName, false));
     }
 
 

@@ -4,34 +4,32 @@ using TreeSharpPlus;
 
 public class HostageBehaviorTree : MonoBehaviour
 {
-    public GameObject participant;
-
+    public GameObject COP;
+    public GameObject HOSTAGE;
     private BehaviorAgent behaviorAgent;
+
     // Use this for initialization
-    void Start()
-    {
-        behaviorAgent = new BehaviorAgent(this.BuildTreeRoot());
-        BehaviorManager.Instance.Register(behaviorAgent);
-        behaviorAgent.StartBehavior();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
+    void Start ()
+	{
+		behaviorAgent = new BehaviorAgent (this.BuildTreeRoot ());
+		BehaviorManager.Instance.Register (behaviorAgent);
+		behaviorAgent.StartBehavior ();
 
     }
 
-    protected Node DuckAndWait(Transform target)
+    protected Node DuckToCop()
     {
-        Val<Vector3> position = Val.V(() => target.position);
-        return new Sequence(participant.GetComponent<BehaviorMecanim>().Node_BodyAnimation("DUCK", true), new LeafWait(1000));
+        return new Sequence(HOSTAGE.GetComponent<BehaviorMecanim>().Node_OrientTowardsHostage(),
+            HOSTAGE.GetComponent<BehaviorMecanim>().Node_BodyAnimationHostage("DUCK", true), new LeafWait(1000));
     }
 
     protected Node BuildTreeRoot()
-    {
-        return
-            new DecoratorLoop(
-                new SequenceShuffle(
-                    this.DuckAndWait(this.participant.transform)));
+	{
+        return new DecoratorLoop(
+            new Sequence(
+                DuckToCop()));      
     }
+
+   
+
 }

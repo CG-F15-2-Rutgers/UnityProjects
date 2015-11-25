@@ -61,29 +61,6 @@ public class RayCasting : MonoBehaviour {
         {
             if(Physics.Raycast(ray,out hit) == true)
             {
-                if (hit.transform.gameObject.CompareTag("ButtonDoor1"))
-                {
-                    Debug.Log("~~ ButtonDoor1 Selected ~~");
-
-                    buttonDoor1Border.SetActive(true);
-                    Invoke("DontShowButton", 1);
-                    string name = hit.collider.gameObject.name;
-                    if (doorOpen == false)
-                    {
-                        Debug.Log("Door Opened");
-                        doorOpen = true;
-                        Doors("Open");
-                    }
-                    else if (doorOpen == true)
-                    {
-                        Debug.Log("Door Closed");
-                        doorOpen = false;
-                        doorClose = true;
-                        Doors("Close");
-                    }
-
-                }
-
                 if (hit.transform.gameObject.CompareTag("HelpMe"))
                 {
                     vector = hit.point;
@@ -130,18 +107,6 @@ public class RayCasting : MonoBehaviour {
     {
         Val<Vector3> position = Val.V(() => target.position);
         return new Sequence(COP.GetComponent<BehaviorMecanim>().Node_BodyAnimation("REACHRIGHT", true), new LeafWait(1000));
-    }
-
-    void Doors(string direction)
-    {
-        animator.SetTrigger(direction);
-    }
-
-  
-
-    void DontShowButton()
-    {
-        buttonDoor1Border.SetActive(false);
     }
 
     void DontShowCircle2()
