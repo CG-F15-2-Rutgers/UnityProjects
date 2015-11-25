@@ -47,6 +47,7 @@ public class DoorMotion : MonoBehaviour {
                     buttonDoor1Border.SetActive(true);
                     Invoke("DontShowButton", 1);
                     string name = hit.collider.gameObject.name;
+                    /*
                     if (doorOpen == false)
                     {
                         Debug.Log("Door Opened");
@@ -60,6 +61,7 @@ public class DoorMotion : MonoBehaviour {
                         doorClose = true;
                         Doors("Close");
                     }
+                    */
 
                 }
             }

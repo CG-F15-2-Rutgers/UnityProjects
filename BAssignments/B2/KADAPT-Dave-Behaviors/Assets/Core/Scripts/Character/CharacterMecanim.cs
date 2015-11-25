@@ -12,6 +12,20 @@ public class CharacterMecanim : MonoBehaviour
     public const float MAX_REACHING_HEIGHT = 2.0f;
     public const float MAX_REACHING_ANGLE = 100;
 
+    /** DAVE NEW - OBJECT INTERACTION**/
+    
+    /** START **/
+
+    public GameObject FE_ground;
+    public GameObject FE_hand;
+    public GameObject ExtinguisherParticles;
+    public GameObject FireParticles;
+    public GameObject Gun_hand;
+    
+    /** END **/
+
+
+
     private GameObject COP;
     private GameObject thisCharacter;
     private GameObject lastHitCharacter;
@@ -30,6 +44,35 @@ public class CharacterMecanim : MonoBehaviour
     public BodyMecanim Body = null;
 
     void Awake() { this.Initialize(); }
+
+    /** DAVE NEW FUNCTIONS START **/
+
+    void ShowExtinguisher()
+    {
+
+        FE_hand.SetActive(true);
+        FE_ground.SetActive(false);
+    }
+
+    void ShowExtinguisherParticles()
+    {
+        ExtinguisherParticles.SetActive(true);
+        Invoke("DontShowExtinguisherParticles", 1F);
+        Invoke("DisableFire", 1F);
+    }
+
+    void DontShowExtinguisherParticles()
+    {
+        ExtinguisherParticles.SetActive(false);
+    }
+
+    void DisableFire()
+    {
+        FireParticles.SetActive(false);
+    }
+
+    /** DAVE NEW FUNCTIONS END **/
+
 
     void Start()
     {

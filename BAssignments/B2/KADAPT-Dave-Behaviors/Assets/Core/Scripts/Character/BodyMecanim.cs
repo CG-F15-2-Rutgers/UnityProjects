@@ -249,9 +249,7 @@ public class BodyMecanim : MonoBehaviour
             case "CROWDPUMP": 
                 this.animator.SetBool("H_CrowdPump", isActive); 
                 break;
-            case "POINTING": 
-                this.animator.SetBool("H_Pointing", isActive); 
-                break;
+            
             case "WONDERFUL": 
                 this.animator.SetBool("H_Wonderful", isActive); 
                 break;
@@ -325,9 +323,7 @@ public class BodyMecanim : MonoBehaviour
             case "HITSTEALTH":
                 this.animator.SetBool("H_HitStealth", isActive);
                 break;
-            case "PISTOLAIM":
-                this.animator.SetBool("H_PistolAim", isActive);
-                break;
+            
             case "READ":
                 this.animator.SetBool("H_Read", isActive);
                 break;
@@ -349,6 +345,18 @@ public class BodyMecanim : MonoBehaviour
             case "WRITING":
                 this.animator.SetBool("H_Writing", isActive);
                 break;
+
+            /** NEW **/
+
+            /** START **/
+            case "PISTOLAIM":
+                this.animator.SetBool("H_PistolAim", isActive);
+                break;
+
+            case "EXTINGUISHERAIM":
+                this.animator.SetBool("H_Pointing", isActive);
+                break;
+           /** END **/
         }
     }
 
@@ -377,10 +385,6 @@ public class BodyMecanim : MonoBehaviour
             if (isActive)
                 this.animator.SetTrigger("B_PickupRight");
             break;
-        case "PICKUPLEFT":
-            if (isActive)
-                this.animator.SetTrigger("B_PickupLeft");
-            break;
         case "TALKING ON PHONE":
             if (isActive)
                 this.animator.SetTrigger("B_Talking_On_Phone");
@@ -392,7 +396,13 @@ public class BodyMecanim : MonoBehaviour
         case "DUCK":
             this.animator.SetBool("B_Duck", isActive);
             break;
-		}
+
+        /** NEW **/
+            case "PICKUP_EXTINGUISHER":
+                if (isActive)
+                    this.animator.SetTrigger("B_PickupLeft");
+                break;
+        }
 	}
 
     /// <summary>
