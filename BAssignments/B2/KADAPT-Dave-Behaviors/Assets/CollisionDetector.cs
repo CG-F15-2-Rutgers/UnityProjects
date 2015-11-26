@@ -10,20 +10,19 @@ public class CollisionDetector : MonoBehaviour
     bool doorOpen;
     bool doorClose;
     bool doorIdle;
-   // bool ButtonPress;
 
     public GameObject MovingDoor;
     public GameObject MovingDoorButton;
     public GameObject IndicateDoorCollision;
 
     Animator DoorAnimator;
-   // Animator ButtonAnimator;
+    Animator ButtonAnimator;
 
     void Start()
     {
         HandSphere = GetComponent<Rigidbody>();
         DoorAnimator = MovingDoor.GetComponent<Animator>();
-       // ButtonAnimator = MovingDoorButton.GetComponent<Animator>();
+        ButtonAnimator = MovingDoorButton.GetComponent<Animator>();
     }
 
 
@@ -32,13 +31,13 @@ public class CollisionDetector : MonoBehaviour
         DoorAnimator.SetTrigger(direction);
     }
 
-    /*
+    
     void Button(string direction)
     {
         ButtonAnimator.SetTrigger(direction);
     }
-    */
-
+    
+    
     void IndicateCollision()
     {
         IndicateDoorCollision.SetActive(true);
@@ -51,23 +50,28 @@ public class CollisionDetector : MonoBehaviour
         IndicateDoorCollision.SetActive(false);
 
     }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.name == "Button")
         {
             IndicateCollision();
-           // Button("ButtonPressed");
+            Button("ButtonPressed");
             if (doorOpen == false)
             {
                 doorOpen = true;
                 Doors("Open");
             }
+            
+            /*
             else if (doorOpen == true)
             {
                 doorOpen = false;
                 doorClose = true;
                 Doors("Close");
             }
+            */
+            
 
 
         }
