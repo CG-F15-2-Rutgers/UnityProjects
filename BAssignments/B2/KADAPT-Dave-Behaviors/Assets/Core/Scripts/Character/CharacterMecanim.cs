@@ -29,13 +29,18 @@ public class CharacterMecanim : MonoBehaviour
     private GameObject COP;
     private GameObject thisCharacter;
     private GameObject lastHitCharacter;
+    private List<GameObject> hitCharacters = new List<GameObject>();
     public bool helpme_interact = false;
     public bool helpme_interact2 = false;
     public bool criminal_interact = false;
     public bool hostage_interact = false;
     public bool button_interact = false;
+    public bool extinguisher_interact = false;
+    public bool has_extinguisher = false;
+    public bool fire_interact = false;
     public bool cop_orient = false;
     public Canvas speechBubble = null;
+    public int win_count = 0;
 
     private Dictionary<FullBodyBipedEffector, bool> triggers;
     private Dictionary<FullBodyBipedEffector, bool> finish;
@@ -133,17 +138,75 @@ public class CharacterMecanim : MonoBehaviour
                 if (hit.transform.gameObject.CompareTag("Criminal") && Mathf.Abs(Vector3.Distance(characterPosition, copPosition)) < 2 && (hit.transform.gameObject == thisCharacter || COP == thisCharacter))
                 {
                     criminal_interact = true;
+                    bool seen = false;
+                    if (hitCharacters.Count != 0) {
+                        for (int i = 0; i < hitCharacters.Count; i++)
+                        { 
+                            if (hitCharacters[i] == lastHitCharacter)
+                            {
+                                seen = true;
+                            }
+                        }
+                    }
+                    if (seen == false)
+                    {
+                        hitCharacters.Add(lastHitCharacter);
+                        win_count = win_count + 1;
+                    }
 
                 }
                 if (hit.transform.gameObject.CompareTag("Hostage") && Mathf.Abs(Vector3.Distance(characterPosition, copPosition)) < 2 && (hit.transform.gameObject == thisCharacter || COP == thisCharacter))
                 {
                     hostage_interact = true;
+                    bool seen = false;
+                    if (hitCharacters.Count != 0)
+                    {
+                        for (int i = 0; i < hitCharacters.Count; i++)
+                        {
+                            if (hitCharacters[i] == lastHitCharacter)
+                            {
+                                seen = true;
+                            }
+                        }
+                    }
+                    if (seen == false)
+                    {
+                        hitCharacters.Add(lastHitCharacter);
+                        win_count = win_count + 1;
+                    }
 
                 }
                 if (hit.transform.gameObject.CompareTag("ButtonDoor1") && Mathf.Abs(Vector3.Distance(characterPosition, copPosition)) < 3 && COP == thisCharacter)
                 {
                     button_interact = true;
                     Debug.Log("Button Clicked");
+
+                }
+                if (hit.transform.gameObject.CompareTag("Extinguisher") && Mathf.Abs(Vector3.Distance(characterPosition, copPosition)) < 3 && COP == thisCharacter)
+                {
+                    extinguisher_interact = true;
+                    has_extinguisher = true;
+
+                }
+                if (hit.transform.gameObject.CompareTag("Fire") && Mathf.Abs(Vector3.Distance(characterPosition, copPosition)) < 5 && COP == thisCharacter && has_extinguisher)
+                {
+                    fire_interact = true;
+                    bool seen = false;
+                    if (hitCharacters.Count != 0)
+                    {
+                        for (int i = 0; i < hitCharacters.Count; i++)
+                        {
+                            if (hitCharacters[i] == lastHitCharacter)
+                            {
+                                seen = true;
+                            }
+                        }
+                    }
+                    if (seen == false)
+                    {
+                        hitCharacters.Add(lastHitCharacter);
+                        win_count = win_count + 1;
+                    }
 
                 }
             }
@@ -294,6 +357,46 @@ public class CharacterMecanim : MonoBehaviour
         return RunStatus.Success;
     }
 
+    public virtual RunStatus NavTurnExtinguisher()
+    {
+        if (extinguisher_interact)
+        {
+            if (thisCharacter == COP)
+            {
+                this.Body.NavSetOrientationBehavior(OrientationBehavior.None);
+                this.Body.NavSetDesiredOrientation(lastHitCharacter.transform.position);
+                if (this.Body.NavIsFacingDesired() == true)
+                {
+                    this.Body.NavSetOrientationBehavior(
+                        OrientationBehavior.LookForward);
+                    return RunStatus.Success;
+                }
+                return RunStatus.Running;
+            }
+        }
+        return RunStatus.Success;
+    }
+
+    public virtual RunStatus NavTurnFire()
+    {
+        if (fire_interact)
+        {
+            if (thisCharacter == COP)
+            {
+                this.Body.NavSetOrientationBehavior(OrientationBehavior.None);
+                this.Body.NavSetDesiredOrientation(lastHitCharacter.transform.position);
+                if (this.Body.NavIsFacingDesired() == true)
+                {
+                    this.Body.NavSetOrientationBehavior(
+                        OrientationBehavior.LookForward);
+                    return RunStatus.Success;
+                }
+                return RunStatus.Running;
+            }
+        }
+        return RunStatus.Success;
+    }
+
     public virtual RunStatus NavTurnCriminal()
     {
         if (criminal_interact)
@@ -396,6 +499,28 @@ public class CharacterMecanim : MonoBehaviour
         return RunStatus.Success;
     }
 
+    public virtual RunStatus NavOrientBehaviorExtinguisher(
+        Val<OrientationBehavior> behavior)
+    {
+        if (extinguisher_interact)
+        {
+            this.Body.NavSetOrientationBehavior(behavior.Value);
+            return RunStatus.Success;
+        }
+        return RunStatus.Success;
+    }
+
+    public virtual RunStatus NavOrientBehaviorFire(
+        Val<OrientationBehavior> behavior)
+    {
+        if (fire_interact)
+        {
+            this.Body.NavSetOrientationBehavior(behavior.Value);
+            return RunStatus.Success;
+        }
+        return RunStatus.Success;
+    }
+
     public virtual RunStatus NavOrientBehaviorCriminal(
         Val<OrientationBehavior> behavior)
     {
@@ -442,6 +567,34 @@ public class CharacterMecanim : MonoBehaviour
             return RunStatus.Success;
         }
         return RunStatus.Running;
+        // TODO: Timeout? - AS
+    }
+
+    public virtual RunStatus NavGoToHostage()
+    {
+        if (hostage_interact)
+        {
+            Vector3 hostageRun = new Vector3(0f, 0f, 0f);
+            if (this.Body.NavCanReach(hostageRun) == false)
+            {
+                Debug.LogWarning("NavGoTo failed -- can't reach target");
+                return RunStatus.Failure;
+            }
+            // TODO: I previously had this if statement here to prevent spam:
+            //     if (this.Interface.NavTarget() != target)
+            // It's good for limiting the amount of SetDestination() calls we
+            // make internally, but sometimes it causes the character1 to stand
+            // still when we re-activate a tree after it's been terminated. Look
+            // into a better way to make this smarter without false positives. - AS
+            this.Body.NavGoTo(hostageRun);
+            if (this.Body.NavHasArrived() == true)
+            {
+                this.Body.NavStop();
+                return RunStatus.Success;
+            }
+            return RunStatus.Running;
+        }
+        return RunStatus.Success;
         // TODO: Timeout? - AS
     }
 
@@ -512,6 +665,20 @@ public class CharacterMecanim : MonoBehaviour
         if (this.Body.NavIsStopped() == true)
             return RunStatus.Success;
         return RunStatus.Running;
+        // TODO: Timeout? - AS
+    }
+
+    public virtual RunStatus NavStopHostage()
+    {
+        if (hostage_interact)
+        {
+            this.Body.NavStop();
+            if (this.Body.NavIsStopped() == true)
+                hostage_interact = false;
+            return RunStatus.Success;
+            return RunStatus.Running;
+        }
+        return RunStatus.Success;
         // TODO: Timeout? - AS
     }
     #endregion
@@ -635,13 +802,25 @@ public class CharacterMecanim : MonoBehaviour
         return RunStatus.Success;
     }
 
+    public virtual RunStatus HandAnimationFire(
+        Val<string> gestureName, Val<bool> isActive)
+    {
+        if (fire_interact)
+        {
+            this.Body.HandAnimation(gestureName.Value, isActive.Value);
+            fire_interact = false;
+            Invoke("ShowExtinguisherParticles", 1.2F); /** DAVE ADDED **/
+            return RunStatus.Success;
+        }
+        this.Body.HandAnimation(gestureName.Value, false);
+        return RunStatus.Success;
+    }
+
     public virtual RunStatus HandAnimationCriminal(
         Val<string> gestureName, Val<bool> isActive)
     {
-        Debug.Log("Criminal hand animation called, but not invoked");
         if (criminal_interact)
         {
-            Debug.Log("Criminal hand animation invoked!");
             this.Body.HandAnimation(gestureName.Value, isActive.Value);
             criminal_interact = false;
             return RunStatus.Success;
@@ -678,6 +857,20 @@ public class CharacterMecanim : MonoBehaviour
             return RunStatus.Success;
         }
         this.Body.BodyAnimation(gestureName.Value, false);
+        return RunStatus.Success;
+    }
+
+    public virtual RunStatus BodyAnimationExtinguisher(Val<string> gestureName, Val<bool> isActive)
+    {
+        if (extinguisher_interact)
+        {
+            Debug.Log("Extinguisher motion called!");
+            this.Body.BodyAnimation(gestureName.Value, isActive.Value);
+            extinguisher_interact = false;
+            Invoke("ShowExtinguisher", 1.0F); /** DAVE ADDED **/
+            return RunStatus.Success;
+        }
+        //this.Body.BodyAnimation(gestureName.Value, false);
         return RunStatus.Success;
     }
 

@@ -45,16 +45,30 @@ public class CopBehaviorTree : MonoBehaviour
             COP.GetComponent<BehaviorMecanim>().Node_HandAnimationCriminal("PISTOLAIM", true), new LeafWait(1000));
     }
 
+    protected Node PickUpExtinguisher()
+    {
+        return new Sequence(COP.GetComponent<BehaviorMecanim>().Node_OrientTowardsExtinguisher(),
+            COP.GetComponent<BehaviorMecanim>().Node_BodyAnimationExtinguisher("PICKUP_EXTINGUISHER", true), new LeafWait(1000));
+    }
+
+    protected Node ExtinguishFire()
+    {
+        return new Sequence(COP.GetComponent<BehaviorMecanim>().Node_OrientTowardsFire(),
+            COP.GetComponent<BehaviorMecanim>().Node_HandAnimationFire("EXTINGUISHERAIM", true), new LeafWait(1000)); 
+    }
+
     protected Node BuildTreeRoot()
-	{
+    {
         return new DecoratorLoop(
             new Sequence(
                 WaveToHelpMeDude(),
                 FightCriminal(),
                 WaveToHostage(),
-                PressButton()));      
+                PressButton(),
+                PickUpExtinguisher(),
+                ExtinguishFire()));
     }
 
-   
+
 
 }

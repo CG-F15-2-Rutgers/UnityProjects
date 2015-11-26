@@ -400,6 +400,7 @@ public class BodyMecanim : MonoBehaviour
         /** NEW **/
             case "PICKUP_EXTINGUISHER":
                 if (isActive)
+                    Debug.Log("Starting pickup animation");
                     this.animator.SetTrigger("B_PickupLeft");
                 break;
         }

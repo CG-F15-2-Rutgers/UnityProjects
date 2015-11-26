@@ -43,6 +43,13 @@ public class BehaviorMecanim : MonoBehaviour
             () => this.Character.NavStop());
     }
 
+    public Node Node_GoToHostage()
+    {
+        return new LeafInvoke(
+            () => this.Character.NavGoToHostage(),
+            () => this.Character.NavStopHostage());
+    }
+
     public Node Node_NudgeTo(Val<Vector3> targ)
     {
         return new LeafInvoke(
@@ -87,6 +94,22 @@ public class BehaviorMecanim : MonoBehaviour
         return new LeafInvoke(
             () => this.Character.NavTurnButton(targ),
             () => this.Character.NavOrientBehaviorButton(
+                OrientationBehavior.LookForward));
+    }
+
+    public Node Node_OrientTowardsExtinguisher()
+    {
+        return new LeafInvoke(
+            () => this.Character.NavTurnExtinguisher(),
+            () => this.Character.NavOrientBehaviorExtinguisher(
+                OrientationBehavior.LookForward));
+    }
+
+    public Node Node_OrientTowardsFire()
+    {
+        return new LeafInvoke(
+            () => this.Character.NavTurnFire(),
+            () => this.Character.NavOrientBehaviorFire(
                 OrientationBehavior.LookForward));
     }
 
@@ -250,6 +273,14 @@ public class BehaviorMecanim : MonoBehaviour
             () => this.Character.HandAnimationButton(gestureName, false));
     }
 
+    public Node Node_HandAnimationFire(Val<string> gestureName, Val<bool> start)
+    {
+
+        return new LeafInvoke(
+            () => this.Character.HandAnimationFire(gestureName, start),
+            () => this.Character.HandAnimationFire(gestureName, false));
+    }
+
     public Node Node_HandAnimationCriminal(Val<string> gestureName, Val<bool> start)
     {
 
@@ -289,6 +320,13 @@ public class BehaviorMecanim : MonoBehaviour
         return new LeafInvoke(
             () => this.Character.BodyAnimationButton(gestureName, start),
             () => this.Character.BodyAnimationButton(gestureName, false));
+    }
+
+    public Node Node_BodyAnimationExtinguisher(Val<string> gestureName, Val<bool> start)
+    {
+        return new LeafInvoke(
+            () => this.Character.BodyAnimationExtinguisher(gestureName, start),
+            () => this.Character.BodyAnimationExtinguisher(gestureName, false));
     }
 
     public Node Node_BodyAnimationCriminal(Val<string> gestureName, Val<bool> start)

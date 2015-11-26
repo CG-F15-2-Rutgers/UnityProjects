@@ -23,13 +23,19 @@ public class HostageBehaviorTree : MonoBehaviour
             HOSTAGE.GetComponent<BehaviorMecanim>().Node_BodyAnimationHostage("DUCK", true), new LeafWait(1000));
     }
 
-    protected Node BuildTreeRoot()
-	{
-        return new DecoratorLoop(
-            new Sequence(
-                DuckToCop()));      
+    protected Node RunAway()
+    {
+        return new Sequence(HOSTAGE.GetComponent<BehaviorMecanim>().Node_OrientTowardsHostage(),
+            HOSTAGE.GetComponent<BehaviorMecanim>().Node_GoToHostage(), new LeafWait(1000));
     }
 
-   
+    protected Node BuildTreeRoot()
+    {
+        return new DecoratorLoop(
+            new Sequence(
+                RunAway()));
+    }
+
+
 
 }
