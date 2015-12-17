@@ -1,0 +1,50 @@
+Story takes place in a prison
+
+Characters:
+	A. 2 Prisoners in a cell together.
+	B. 3 Cops around prison
+		A. One waits in front of the prison cell door.
+		B. Another waits across the hall.
+		C. Another waits near final exit.
+
+Items:
+	A. Prison Cell Bed 1
+	B. Prison Cell Bed 2
+	C. Prison Cell Poster, behind which a weapon lies
+		A. Weapon may be there or not
+		B. If weapon not there, outcome of story changed
+	D. Prison Cell Toilet
+		A. Behind Toilet is secret passageway dug by Prisoners
+
+Story:
+	1. Prisoners talk to each other about their sentences.
+	2. They discuss that they are both on Death Row, and will be executed
+	   soon.
+	3. They both decide to escape
+	4. They decide that they need a weapon to escape with
+	5. Prisoner 1 goes to wall where poster is, rips poster off.
+	6. Behind poster is a weapon
+	7. Prisoner 1 grabs weapon
+	8. Prisoner 1 goes back to prisoner 2 and tells him he has a weapon,
+           and that they should proceed with their wonderful adventure
+	9. Prisoner 2 agrees, goes to toilet and pushes it aside to show opening
+	   in wall.
+	10. Prisoner 2 crawls through secret passage, and Prisoner 1 follows.
+	11. Prisoner 2 and Prisoner 1 walk up to prisoner guard 1 who notices
+	    then and tells them to stop, while pointing his gun at them.
+	12. Prisoner 1 shanks the dude. Prisoner 2 checks for card that grants 
+	    door access.
+		A. If he finds one, he claps or some shit. If not, he kills himself and continues.
+	13. Prisoner 2 and 1 then decide to go down the next hall way, which
+	    leads to a dead end. They talk to each other about the dead end,
+            decide to go a different way.	
+	14. Walk different way, encounter another cop. Prisoner 1, once again,
+	    proceeds to shank the dude.
+	15. Prisoner 2 checks guard for card for door access.
+		A. Same procedure as 12. If he killed himself already, he kills himself again. Or proceeds to try to get it from another guard.
+	16. They proceed and find another intersection (one hallway goes one way another goes another). They try going down one path but its a dead end, so they go the other way.
+	17. They find a cop in the other way. CAn you guess what happens next.
+	18. Cop gets shanked by Prisoner 1, prisoner 2 checks for card. Finds it maybe, then proceeds to exit. 
+	19. They will always find a card. So they proceed to the exit door.
+	20. They open the door with card access (prisoner raises hand, door registers hand movement and card in it and opens)
+	21. They come out, celebrate, make out, etc.
