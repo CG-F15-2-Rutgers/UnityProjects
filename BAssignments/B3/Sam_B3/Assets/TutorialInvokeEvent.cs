@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 using TreeSharpPlus;
+using System;
 
 public class TutorialInvokeEvent : MonoBehaviour
 {
 
     public GameObject Friend;
     public GameObject Wanderer;
+    public RButtonPressed rButton;
 
     private BehaviorAgent behaviorAgent;
 
@@ -15,57 +17,64 @@ public class TutorialInvokeEvent : MonoBehaviour
     {
         behaviorAgent = new BehaviorAgent(this.ConversationTree());
         BehaviorManager.Instance.Register(behaviorAgent);
+        behaviorAgent.StartBehavior();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R) == true)
-        {
-            behaviorAgent.StartBehavior();
-        }
+
     }
+
     protected Node Converse()
     {
-        return new Sequence(Wanderer.GetComponent<BehaviorMecanim>().ST_PlayFaceGesture("ACKNOWLEDGE",2000), 
-            Friend.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("WAVE", 2000),
+        Debug.Log("Converse Active!");
+        return new Sequence(Wanderer.GetComponent<BehaviorMecanim>().ST_PlayFaceGesture("ACKNOWLEDGE", 2000), 
+            Friend.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("WAVE", (long)2000),
             Wanderer.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("BEINGCOCKY", 2000), 
             Friend.GetComponent<BehaviorMecanim>().ST_PlayFaceGesture("HEADNOD", 2000));
     }
 
-    protected Node EyeContact(Val<Vector3> WandererPos, Val<Vector3> FriendPos)
-    {         
-        // Estimate the head position based on height         
-        Vector3 height = new Vector3(0.0f, 1.85f, 0.0f);  
-
-        Val<Vector3> WandererHead = Val.V(() => WandererPos.Value + height);
-        Val<Vector3> FriendHead = Val.V(() => FriendPos.Value + height);
-        return new SequenceParallel(Friend.GetComponent<BehaviorMecanim>().Node_HeadLook(WandererHead), 
-            Wanderer.GetComponent<BehaviorMecanim>().Node_HeadLook(FriendHead));
-    }
-
-    protected Node EyeContactAndConverse(Val<Vector3> WandererPos, Val<Vector3> FriendPos)
+    protected Node ApproachAndOrient()
     {
-        return new Race(this.EyeContact(WandererPos, FriendPos), 
-            this.Converse());
-    }
-
-    protected Node ApproachAndOrient(Val<Vector3> WandererPos, Val<Vector3> FriendPos)
-    {
-        return new Sequence(             
+        Debug.Log("Approach and Orient Active!");
+        Val<Vector3> FriendPos = Val.V(() => Friend.transform.position);
+        Val<Vector3> WandererPos = Val.V(() => Wanderer.transform.position);
+        return new Sequence(new SequenceParallel(             
             // Approach at distance 1.0f             
-            Friend.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(WandererPos, 1.0f),             
+            Wanderer.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(FriendPos, 1.0f)),
             new SequenceParallel( 
                 Friend.GetComponent<BehaviorMecanim>().Node_OrientTowards(WandererPos), 
                 Wanderer.GetComponent<BehaviorMecanim>().Node_OrientTowards(FriendPos)));
     }
 
+    protected Node waitForRButtonPressed()
+    {
+        return new DecoratorInvert(
+            new DecoratorLoop((new DecoratorInvert(
+            new Sequence(new LeafAssert(isRPressed))))));
+    }
+
+    bool isRPressed()
+    {
+        Val<bool> r = Val.V(() => this.rButton.rPressed);
+        return r.Value;
+    }
+
+    protected RunStatus resetRPressed()
+    {
+        rButton.rPressed = false;
+        return RunStatus.Success;
+    }
+
     public Node ConversationTree()
     {
-        Val<Vector3> WandererPos = Val.V(() => Wanderer.transform.position);
-        Val<Vector3> FriendPos = Val.V(() => Friend.transform.position);
-        return new Sequence(this.ApproachAndOrient(WandererPos, FriendPos), 
-            this.EyeContactAndConverse(WandererPos, FriendPos));
+        return new DecoratorLoop(
+            new Sequence(this.waitForRButtonPressed(),
+                new LeafWait(1000), 
+                this.ApproachAndOrient(),
+                this.Converse(),
+                new LeafInvoke((Func<RunStatus>)resetRPressed)));
     }
 
 

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using TreeSharpPlus;
 
@@ -8,6 +9,7 @@ public class MyBehaviorTree : MonoBehaviour
 	public Transform wander2;
 	public Transform wander3;
 	public GameObject participant;
+	public GameObject police;
 
 	private BehaviorAgent behaviorAgent;
 	// Use this for initialization
@@ -26,19 +28,21 @@ public class MyBehaviorTree : MonoBehaviour
 
 	protected Node ST_ApproachAndWait(Transform target)
 	{
-		Val<Vector3> position = Val.V (() => target.position); //Doing this takes the target.position value at call time
-		return new Sequence(participant.GetComponent<BehaviorMecanim>().Node_GoTo(position), 
-            new LeafWait(1000));
+		Val<Vector3> position = Val.V (() => target.position);
+		return new Sequence( participant.GetComponent<BehaviorMecanim>().Node_GoTo(position), new LeafWait(1000));
 	}
 
 	protected Node BuildTreeRoot()
 	{
-		return
-			new DecoratorLoop(
-                new DecoratorForceStatus(RunStatus.Success,
-                    new SequenceShuffle(
-					    this.ST_ApproachAndWait(this.wander1),
-					    this.ST_ApproachAndWait(this.wander2),
-					    this.ST_ApproachAndWait(this.wander3))));
+		Val<float> pp = Val.V (() => police.transform.position.z);
+		Func<bool> act = () => (police.transform.position.z > 10);
+		Node roaming = new DecoratorLoop (
+						new Sequence(
+						this.ST_ApproachAndWait(this.wander1),
+						this.ST_ApproachAndWait(this.wander2),
+						this.ST_ApproachAndWait(this.wander3)));
+		Node trigger = new DecoratorLoop (new LeafAssert (act));
+		Node root = new DecoratorLoop (new DecoratorForceStatus (RunStatus.Success, new SequenceParallel(trigger, roaming)));
+		return root;
 	}
 }
