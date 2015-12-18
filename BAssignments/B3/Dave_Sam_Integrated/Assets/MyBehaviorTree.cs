@@ -32,6 +32,8 @@ public class MyBehaviorTree : MonoBehaviour
     public PlayerControls Controls;
     public CameraController Camera;
     public TextBoxController TextBox;
+    public TreasureBoxMovement Treasure;
+    public GameObject Poster;
 
     private BehaviorAgent behaviorAgent;
 	// Use this for initialization
@@ -66,8 +68,9 @@ public class MyBehaviorTree : MonoBehaviour
         Val<Vector3> PrisonerPos = Val.V(() => Prisoner.transform.position);
         Val<Vector3> StartPos = Val.V(() => PlayerStartPoint.position);
         Val<Vector3> StartOrient = Val.V(() => PlayerStartOrientation.position);
+        Val<Vector3> ChestPos = Val.V(() => Treasure.TreasureBox.transform.position);
         return new Sequence(
-            new LeafWait(4000),
+            new LeafWait(1000),
             new SequenceParallel(Player.GetComponent<BehaviorMecanim>().Node_OrientTowards(PrisonerPos),
                                  Prisoner.GetComponent<BehaviorMecanim>().Node_OrientTowards(PlayerPos)),
             new LeafInvoke((Func<RunStatus>)TextBox.startCounter),
@@ -87,7 +90,34 @@ public class MyBehaviorTree : MonoBehaviour
             Player.GetComponent<BehaviorMecanim>().Node_OrientTowards(StartOrient),
             new LeafInvoke((Func<RunStatus>)Controls.EnableControls),
             new LeafInvoke((Func<RunStatus>)Camera.EnableCameraFollow),
-            new DecoratorLoop(PrisonerFollow(Player,Prisoner)));
+            new SequenceParallel(new DecoratorLoop(PrisonerFollow(Player,Prisoner)),
+                                 new Sequence(new DecoratorInvert(new DecoratorLoop((new DecoratorInvert(new Sequence(new LeafAssert(Controls.isTreasureClicked)))))),
+                                              Player.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(Treasure.TreasureBox.transform.position, 1.5f),
+                                              Player.GetComponent<BehaviorMecanim>().Node_OrientTowards(Treasure.TreasureBox.transform.position),
+                                              new LeafInvoke((Func<RunStatus>)TextBox.resetDialogFinished),
+                                              new LeafInvoke((Func<RunStatus>)TextBox.TreasureDialog),
+                                              new DecoratorInvert(new DecoratorLoop((new DecoratorInvert(new Sequence(new LeafAssert(TextBox.isDialogFinished)))))),
+                                              new LeafInvoke((Func<RunStatus>)TextBox.resetDialogFinished),
+                                              Player.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("REACHRIGHT", 1000),
+                                              new LeafWait(500),
+                                              new LeafInvoke((Func<RunStatus>)Treasure.makeTreasureMove),
+                                              new LeafWait(500),
+                                              new LeafInvoke((Func<RunStatus>)TextBox.TreasureDialogComplete),
+                                              new DecoratorInvert(new DecoratorLoop((new DecoratorInvert(new Sequence(new LeafAssert(TextBox.isDialogFinished)))))),
+                                              new LeafInvoke((Func<RunStatus>)TextBox.resetDialogFinished),
+                                              new LeafWait(500)),
+                                 new Sequence(new DecoratorInvert(new DecoratorLoop((new DecoratorInvert(new Sequence(new LeafAssert(Controls.isPosterClicked)))))),
+                                              Player.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(Poster.transform.position, 2f),
+                                              Player.GetComponent<BehaviorMecanim>().Node_OrientTowards(Poster.transform.position),
+                                              new LeafInvoke((Func<RunStatus>)TextBox.resetDialogFinished),
+                                              new LeafInvoke((Func<RunStatus>)TextBox.PosterDialog),
+                                              new DecoratorInvert(new DecoratorLoop((new DecoratorInvert(new Sequence(new LeafAssert(TextBox.isDialogFinished)))))),
+                                              new LeafInvoke((Func<RunStatus>)TextBox.resetDialogFinished),
+                                              Player.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("REACHRIGHT", 1000),
+                                              new LeafInvoke((Func<RunStatus>)TextBox.PosterDialogComplete),
+                                              new DecoratorInvert(new DecoratorLoop((new DecoratorInvert(new Sequence(new LeafAssert(TextBox.isDialogFinished)))))),
+                                              new LeafInvoke((Func<RunStatus>)TextBox.resetDialogFinished),
+                                              new LeafWait(500))));
     }
 
     protected Node CopWander(GameObject Cop, Transform WanderBegin, Transform WanderEnd)

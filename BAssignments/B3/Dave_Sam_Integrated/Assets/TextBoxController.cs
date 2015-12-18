@@ -11,7 +11,7 @@ public class TextBoxController : MonoBehaviour {
     public Canvas Box;
 
     private int counter;
-    private bool dialogFinished;
+    public bool dialogFinished;
 
 	// Use this for initialization
 	void Start () {
@@ -43,12 +43,6 @@ public class TextBoxController : MonoBehaviour {
             case 5:
                 Dialog5();
                 break;
-            default:
-                Name.enabled = false;
-                Body.enabled = false;
-                Box.enabled = false;
-                button.enabled = false;
-                break;
 
         }
 	}
@@ -63,6 +57,10 @@ public class TextBoxController : MonoBehaviour {
     {
         counter = counter + 1;
         dialogFinished = true;
+        Name.enabled = false;
+        Body.enabled = false;
+        Box.enabled = false;
+        button.enabled = false;
     }
 
     public bool isDialogFinished()
@@ -130,5 +128,57 @@ public class TextBoxController : MonoBehaviour {
         Body.enabled = true;
         Box.enabled = true;
         button.enabled = true;
+    }
+
+    public RunStatus TreasureDialog()
+    {
+        Name.text = "Sam:";
+        Body.text = "Hmm... I wonder what's behind this Treasure Chest...";
+
+        Name.enabled = true;
+        Body.enabled = true;
+        Box.enabled = true;
+        button.enabled = true;
+
+        return RunStatus.Success;
+    }
+
+    public RunStatus TreasureDialogComplete()
+    {
+        Name.text = "Sam:";
+        Body.text = "Sweet! A secret passageway!";
+
+        Name.enabled = true;
+        Body.enabled = true;
+        Box.enabled = true;
+        button.enabled = true;
+
+        return RunStatus.Success;
+    }
+
+    public RunStatus PosterDialog()
+    {
+        Name.text = "Sam:";
+        Body.text = "Hmm... I wonder what's behind this Poster...";
+
+        Name.enabled = true;
+        Body.enabled = true;
+        Box.enabled = true;
+        button.enabled = true;
+
+        return RunStatus.Success;
+    }
+
+    public RunStatus PosterDialogComplete()
+    {
+        Name.text = "Sam:";
+        Body.text = "Sweet! A sword! I can take out the guards with this!";
+
+        Name.enabled = true;
+        Body.enabled = true;
+        Box.enabled = true;
+        button.enabled = true;
+
+        return RunStatus.Success;
     }
 }
