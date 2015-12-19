@@ -9,9 +9,12 @@ public class PlayerControls : MonoBehaviour {
 
     private bool treasureClicked;
     private bool posterClicked;
+    private bool isCopClicked;
+    private GameObject copClicked;
 
 	// Use this for initialization
 	void Start () {
+        copClicked = Player;
         ControlsEnabled = false;
         treasureClicked = false;
         posterClicked = false;
@@ -32,6 +35,7 @@ public class PlayerControls : MonoBehaviour {
                 {
                     vector = hit.point;
                     Player.GetComponent<NavMeshAgent>().SetDestination(hit.point);
+                    Debug.Log("Raycast hit ground!");
                 }
             }
         }
@@ -50,6 +54,12 @@ public class PlayerControls : MonoBehaviour {
                     Debug.Log("Poster clicked!");
                     posterClicked = true;
                 }
+                if (hit.transform.gameObject.CompareTag("Cop"))
+                {
+                    Debug.Log(hit.transform.gameObject.name+" clicked!");
+                    copClicked = hit.transform.gameObject;
+                    this.isCopClicked = true;
+                }
             }
         }
 
@@ -61,6 +71,13 @@ public class PlayerControls : MonoBehaviour {
         return RunStatus.Success;
     }
 
+    public RunStatus DisableControls()
+    {
+        ControlsEnabled = false;
+        Player.GetComponent<NavMeshAgent>().Stop();
+        return RunStatus.Success;
+    }
+
     public bool isTreasureClicked()
     {
         return treasureClicked;
@@ -69,5 +86,21 @@ public class PlayerControls : MonoBehaviour {
     public bool isPosterClicked()
     {
         return posterClicked;
+    }
+
+    public GameObject whichCopClicked()
+    {
+        return copClicked;
+    }
+
+    public bool isCopClickedFunc()
+    {
+        return isCopClicked;
+    }
+
+    public RunStatus resetCopClicked()
+    {
+        isCopClicked = false;
+        return RunStatus.Success;
     }
 }
