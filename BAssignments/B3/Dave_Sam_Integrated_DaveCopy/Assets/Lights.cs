@@ -15,7 +15,6 @@ public class Lights : MonoBehaviour {
 
     void TurnLightsOff()
     {
-        Debug.Log("LIGHTS OFF ");
         FrontLights.SetActive(false);
         BackLights.SetActive(false);
         Invoke("TurnLightsOn", 1);
@@ -23,7 +22,6 @@ public class Lights : MonoBehaviour {
 
     void TurnLightsOn()
     {
-        Debug.Log("LIGHTS ON");
         FrontLights.SetActive(true);
         BackLights.SetActive(true);
     }
