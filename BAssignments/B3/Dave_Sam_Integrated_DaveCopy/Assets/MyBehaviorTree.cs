@@ -14,6 +14,8 @@ public class MyBehaviorTree : MonoBehaviour
     public GameObject Cop5;
     public GameObject Cop6;
 
+    private Val<GameObject> CopClicked;
+
     public Transform Wander1Start;
     public Transform Wander1End;
     public Transform Wander2Start;
@@ -34,12 +36,14 @@ public class MyBehaviorTree : MonoBehaviour
     public TextBoxController TextBox;
     public TreasureBoxMovement Treasure;
     public GameObject Poster;
+    public PoliceCollisionAggregator PCA;
 
     private BehaviorAgent behaviorAgent;
 	// Use this for initialization
 	void Start ()
 	{
-		behaviorAgent = new BehaviorAgent (this.BehaviorTree());
+        CopClicked = Val.V(() => new GameObject());
+        behaviorAgent = new BehaviorAgent (this.BehaviorTree());
 		BehaviorManager.Instance.Register (behaviorAgent);
 		behaviorAgent.StartBehavior ();
 	}
@@ -92,7 +96,7 @@ public class MyBehaviorTree : MonoBehaviour
             new LeafInvoke((Func<RunStatus>)Camera.EnableCameraFollow),
             new SequenceParallel(new DecoratorLoop(PrisonerFollow(Player,Prisoner)),
                                  new Sequence(new DecoratorInvert(new DecoratorLoop((new DecoratorInvert(new Sequence(new LeafAssert(Controls.isTreasureClicked)))))),
-                                              Player.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(Treasure.TreasureBox.transform.position, 1.5f),
+                                              Player.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(Treasure.TreasureBox.transform.position, 2f),
                                               Player.GetComponent<BehaviorMecanim>().Node_OrientTowards(Treasure.TreasureBox.transform.position),
                                               new LeafInvoke((Func<RunStatus>)TextBox.resetDialogFinished),
                                               new LeafInvoke((Func<RunStatus>)TextBox.TreasureDialog),
@@ -101,7 +105,6 @@ public class MyBehaviorTree : MonoBehaviour
                                               Player.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("REACHRIGHT", 1000),
                                               new LeafWait(500),
                                               new LeafInvoke((Func<RunStatus>)Treasure.makeTreasureMove),
-                                              new LeafWait(500),
                                               new LeafInvoke((Func<RunStatus>)TextBox.TreasureDialogComplete),
                                               new DecoratorInvert(new DecoratorLoop((new DecoratorInvert(new Sequence(new LeafAssert(TextBox.isDialogFinished)))))),
                                               new LeafInvoke((Func<RunStatus>)TextBox.resetDialogFinished),
@@ -113,6 +116,7 @@ public class MyBehaviorTree : MonoBehaviour
                                               new LeafInvoke((Func<RunStatus>)TextBox.PosterDialog),
                                               new DecoratorInvert(new DecoratorLoop((new DecoratorInvert(new Sequence(new LeafAssert(TextBox.isDialogFinished)))))),
                                               new LeafInvoke((Func<RunStatus>)TextBox.resetDialogFinished),
+                                              new LeafWait(500),
                                               Player.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("REACHRIGHT", 1000),
                                               new LeafInvoke((Func<RunStatus>)TextBox.PosterDialogComplete),
                                               new DecoratorInvert(new DecoratorLoop((new DecoratorInvert(new Sequence(new LeafAssert(TextBox.isDialogFinished)))))),
@@ -120,34 +124,48 @@ public class MyBehaviorTree : MonoBehaviour
                                               new LeafWait(500))));
     }
 
+    protected Node CopOrient(GameObject Cop, GameObject Player)
+    {
+        Val<Vector3> player = Val.V(() => Player.transform.position);
+        return new SequenceParallel(Cop.GetComponent<BehaviorMecanim>().Node_OrientTowards(player),
+                                 Cop.GetComponent<BehaviorMecanim>().Node_HandAnimation("PISTOLAIM", true));
+    }
+
+    protected RunStatus LostGame()
+    {
+        Time.timeScale = 0.0f;
+        behaviorAgent.StopBehavior();
+        return RunStatus.Success;
+    }
+
     protected Node CopWander(GameObject Cop, Transform WanderBegin, Transform WanderEnd)
     {
         Val<Vector3> begin = Val.V(() => WanderBegin.position);
         Val<Vector3> end = Val.V(() => WanderEnd.position);
-        return new DecoratorLoop(
-            new Sequence(Cop.GetComponent<BehaviorMecanim>().Node_GoTo(begin), new LeafWait(1000),
-                         Cop.GetComponent<BehaviorMecanim>().Node_GoTo(end), new LeafWait(1000)));
+        return new Race(
+                new Sequence(
+                    new Race(
+                        new DecoratorLoop(
+                            new Sequence(Cop.GetComponent<BehaviorMecanim>().Node_GoTo(begin), new LeafWait(1000),
+                                 Cop.GetComponent<BehaviorMecanim>().Node_GoTo(end), new LeafWait(1000))),
+                        new Sequence(new DecoratorInvert(new DecoratorLoop((new DecoratorInvert(new Sequence(new LeafAssert(PCA.hasPrisonerCollided)))))),
+                            new LeafWait(500))),
+                    new LeafInvoke((Func<RunStatus>)Controls.DisableControls),
+                    new SequenceParallel(
+                        new Sequence(new LeafInvoke((Func<RunStatus>)TextBox.resetDialogFinished),
+                            new LeafInvoke((Func<RunStatus>)TextBox.CaughtDialog),
+                            new DecoratorInvert(new DecoratorLoop((new DecoratorInvert(new Sequence(new LeafAssert(TextBox.isDialogFinished)))))),
+                            new LeafInvoke((Func<RunStatus>)TextBox.resetDialogFinished),
+                            new LeafInvoke((Func<RunStatus>)LostGame)),
+                        Player.GetComponent<BehaviorMecanim>().Node_HandAnimation("HANDSUP", true),
+                        Prisoner.GetComponent<BehaviorMecanim>().Node_HandAnimation("HANDSUP", true),
+                        CopOrient(Cop1, Player),
+                        CopOrient(Cop2, Player),
+                        CopOrient(Cop3, Player),
+                        CopOrient(Cop4, Player),
+                        CopOrient(Cop5, Player),
+                        CopOrient(Cop6, Player))));
     }
-
-	/*protected Node ST_ApproachAndWait(Transform target)
-	{
-		Val<Vector3> position = Val.V (() => target.position);
-		return new Sequence( participant.GetComponent<BehaviorMecanim>().Node_GoTo(position), new LeafWait(1000));
-	}
-
-	protected Node BuildTreeRoot()
-	{
-		Val<float> pp = Val.V (() => police.transform.position.z);
-		Func<bool> act = () => (police.transform.position.z > 10);
-		Node roaming = new DecoratorLoop (
-						new Sequence(
-						this.ST_ApproachAndWait(this.wander1),
-						this.ST_ApproachAndWait(this.wander2),
-						this.ST_ApproachAndWait(this.wander3)));
-		Node trigger = new DecoratorLoop (new LeafAssert (act));
-		Node root = new DecoratorLoop (new DecoratorForceStatus (RunStatus.Success, new SequenceParallel(trigger, roaming)));
-		return root;
-	}*/
 
     protected Node InitialConversationTree()
     {
