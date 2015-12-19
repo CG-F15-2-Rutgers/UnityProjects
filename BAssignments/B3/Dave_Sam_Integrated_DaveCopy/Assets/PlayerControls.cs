@@ -10,6 +10,7 @@ public class PlayerControls : MonoBehaviour {
     private bool treasureClicked;
     private bool posterClicked;
     private bool isCopClicked;
+    private bool scannerClicked;
     private GameObject copClicked;
 
 	// Use this for initialization
@@ -18,6 +19,7 @@ public class PlayerControls : MonoBehaviour {
         ControlsEnabled = false;
         treasureClicked = false;
         posterClicked = false;
+        scannerClicked = false;
 	}
 	
 	// Update is called once per frame
@@ -54,11 +56,10 @@ public class PlayerControls : MonoBehaviour {
                     Debug.Log("Poster clicked!");
                     posterClicked = true;
                 }
-                if (hit.transform.gameObject.CompareTag("Cop"))
+                if (hit.transform.gameObject.CompareTag("Scanner"))
                 {
-                    Debug.Log(hit.transform.gameObject.name+" clicked!");
-                    copClicked = hit.transform.gameObject;
-                    this.isCopClicked = true;
+                    Debug.Log("Scanner clicked!");
+                    scannerClicked = true;
                 }
             }
         }
@@ -86,6 +87,11 @@ public class PlayerControls : MonoBehaviour {
     public bool isPosterClicked()
     {
         return posterClicked;
+    }
+
+    public bool isScannerClicked()
+    {
+        return scannerClicked;
     }
 
     public GameObject whichCopClicked()

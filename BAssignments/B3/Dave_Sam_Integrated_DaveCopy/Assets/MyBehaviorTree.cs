@@ -13,6 +13,7 @@ public class MyBehaviorTree : MonoBehaviour
     public GameObject Cop4;
     public GameObject Cop5;
     public GameObject Cop6;
+    public GameObject Scanner;
 
     private Val<GameObject> CopClicked;
 
@@ -37,6 +38,7 @@ public class MyBehaviorTree : MonoBehaviour
     public TreasureBoxMovement Treasure;
     public GameObject Poster;
     public PoliceCollisionAggregator PCA;
+    public ScannerCollision ScannerCol;
 
     private BehaviorAgent behaviorAgent;
 	// Use this for initialization
@@ -173,11 +175,24 @@ public class MyBehaviorTree : MonoBehaviour
             new DecoratorForceStatus(RunStatus.Success, InitialConversation(Player,Prisoner)));
     }
 
+    protected Node UnlockExit(GameObject Player, GameObject Scanner)
+    {
+        Val<Vector3> scannerPos = Val.V(() => Scanner.transform.position);
+        return new Sequence(
+            new DecoratorInvert(new DecoratorLoop((new DecoratorInvert(new Sequence(new LeafAssert(Controls.isScannerClicked)))))),
+            Player.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(scannerPos, 2f),
+            Player.GetComponent<BehaviorMecanim>().Node_OrientTowards(scannerPos),
+            new LeafWait(500),
+            Player.GetComponent<BehaviorMecanim>().ST_PlayHandGesture("REACHRIGHT", 1000),
+            new LeafWait(500));
+    }
+
     protected Node BehaviorTree()
     {
         return new DecoratorLoop(
             new SequenceParallel(
                 InitialConversationTree(),
+                UnlockExit(Player, Scanner),
                 CopWander(Cop1, Wander1Start, Wander1End),
                 CopWander(Cop2, Wander2Start, Wander2End),
                 CopWander(Cop3, Wander3Start, Wander3End),
